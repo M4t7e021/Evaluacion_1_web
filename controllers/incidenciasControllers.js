@@ -1,4 +1,5 @@
 // Arreglo global en memoria y contador de ID
+const { convertirId, buscarEnArreglo } = require("../utils/helpers");
 const incidencias = [];
 let contadorId = 1;
 
