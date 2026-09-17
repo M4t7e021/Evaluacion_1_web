@@ -111,10 +111,35 @@ const cambiarEstado = (req, res) => {
     });
 };
 
+// 6. Eliminar Incidencia
+const eliminarIncidencia = (req, res) => {
+    const id = convertirid(req.params.id);
+
+    if (id === null) {
+        return res.status(400).json({ mensaje: "El id debe ser un numero entero positivo" });
+    }
+
+    // Requisito: Usar findIndex() para localizar la posición
+    const index = incidencias.findIndex((inc) => inc.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ mensaje: "Incidencia no encontrada" });
+    }
+
+    // Requisito: Usar splice() para eliminar el elemento del arreglo
+    const incidenciaEliminada = incidencias.splice(index, 1);
+
+    return res.status(200).json({
+        mensaje: "Incidencia eliminada correctamente",
+        incidencia: incidenciaEliminada[0]
+    });
+};
+
 module.exports = {
   incidencias,
   listarIncidencias,
   registrarIncidencia,
   buscarIncidenciaPorId,
-  cambiarEstado
+  cambiarEstado,
+  eliminarIncidencia
 };
