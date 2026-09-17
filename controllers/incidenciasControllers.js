@@ -66,9 +66,55 @@ const buscarIncidenciaPorId = (req, res) => {
   return res.status(200).json(incidencia);
 };
 
+// 5. Cambiar Estado de Incidencia
+const cambiarEstado = (req, res) => {
+    const id = convertirid(req.params.id);
+
+    if (id === null) {
+        return res.status(400).json({ mensaje: "El id debe ser un numero entero positivo" });
+    }
+
+    const incidencia = buscarEnArreglo(incidencias, id);
+
+    if (!incidencia) {
+        return res.status(404).json({ mensaje: "Incidencia no encontrada" });
+    }
+
+    const { estado } = req.body;
+
+    if (!estado || typeof estado !== 'string') {
+        return res.status(400).json({ mensaje: "El campo estado es obligatorio y debe ser texto" });
+    }
+
+    const estadoLimPIO = estado.trim();
+    let estadoValido = "";
+
+    // Requisito: Uso obligatorio de Switch para los estados permitidos
+    switch (estadoLimPIO) {
+        case "Pendiente":
+        case "En Proceso":
+        case "Resuelta":
+        case "Cancelada":
+            estadoValido = estadoLimPIO;
+            break;
+        default:
+            return res.status(400).json({ 
+                mensaje: "Estado inválido. Los estados permitidos son: Pendiente, En Proceso, Resuelta, Cancelada" 
+            });
+    }
+
+    incidencia.estado = estadoValido;
+
+    return res.status(200).json({
+        mensaje: "Estado actualizado correctamente",
+        incidencia
+    });
+};
+
 module.exports = {
   incidencias,
   listarIncidencias,
   registrarIncidencia,
-  buscarIncidenciaPorId
+  buscarIncidenciaPorId,
+  cambiarEstado
 };
