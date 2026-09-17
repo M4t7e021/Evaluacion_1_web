@@ -48,8 +48,26 @@ const registrarIncidencia = (req, res) => {
   return res.status(201).json({ mensaje: "Incidencia registrada correctamente" });
 };
 
+// GET /incidencias/:id
+const buscarIncidenciaPorId = (req, res) => {
+  const id = convertirId(req.params.id);
+
+  if (id === null) {
+    return res.status(400).json({ mensaje: "El id debe ser un numero entero positivo" });
+  }
+
+  const incidencia = buscarEnArreglo(incidencias, id);
+
+  if (!incidencia) {
+    return res.status(404).json({ mensaje: "Incidencia no encontrada" });
+  }
+
+  return res.status(200).json(incidencia);
+};
+
 module.exports = {
   incidencias,
   listarIncidencias,
-  registrarIncidencia
+  registrarIncidencia,
+  buscarIncidenciaPorId
 };
