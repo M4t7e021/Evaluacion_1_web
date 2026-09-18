@@ -17,7 +17,7 @@ const obtenerEstadisticas = (req, res) => {
         break;
 
       case "Cancelada":
-        
+
         resultado.canceladas++;
         break;
     }
@@ -78,4 +78,15 @@ const obtenerClasificacion = (req, res) => {
     id: incidencia.id,
     clasificacion
   });
+};
+
+module.exports = {
+  incidencias,
+  listarIncidencias,
+  registrarIncidencia,
+  buscarIncidenciaPorId,
+  cambiarEstado,
+  eliminarIncidencia,
+  obtenerEstadisticas,
+  obtenerClasificacion
 };
